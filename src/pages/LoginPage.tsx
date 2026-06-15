@@ -36,18 +36,18 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
 
   return (
     <div className="flex h-screen w-full bg-surface overflow-hidden">
-      
+
       {/* Left Half: School Image & Branding */}
       <div className="hidden lg:flex flex-1 relative flex-col justify-center items-center overflow-hidden">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center animate-[scaleIn_20s_ease-out_forwards]"
           style={{ backgroundImage: `url('/indian_school_building.png')` }}
         />
-        
+
         {/* Dark Overlay for readability */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F]/80 via-[#1e3a8a]/70 to-transparent" />
-        
+
         {/* Branding Content */}
         <div className="relative z-10 flex flex-col items-center text-white px-12 text-center animate-[slideUp_0.8s_ease-out]">
           <div className="mb-6 w-24 h-24 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20 shadow-2xl">
@@ -65,7 +65,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
       {/* Right Half: Login Form */}
       <div className="flex-1 flex items-center justify-center p-8 sm:p-12 animate-[fadeIn_0.5s_ease-out]">
         <div className="w-full max-w-[450px] min-w-[320px] bg-surface rounded-3xl border border-outline-variant card-shadow p-8 sm:p-10 relative overflow-hidden">
-          
+
           {/* Decorative background element */}
           <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-primary/5 rounded-full blur-2xl pointer-events-none" />
 
@@ -75,7 +75,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            
+
             {/* Role Selection Tabs */}
             <div className="bg-surface-container-lowest p-1.5 rounded-xl border border-outline-variant flex gap-1 mb-6">
               {(['Admin', 'Staff', 'Student'] as const).map(r => (
@@ -83,11 +83,10 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                   key={r}
                   type="button"
                   onClick={() => setRole(r)}
-                  className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-300 ${
-                    role === r 
-                      ? 'bg-primary text-on-primary shadow-sm scale-[1.02]' 
+                  className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-300 ${role === r
+                      ? 'bg-primary text-on-primary shadow-sm scale-[1.02]'
                       : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
-                  }`}
+                    }`}
                 >
                   {r}
                 </button>
@@ -162,7 +161,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
 
           <div className="mt-8 text-center border-t border-outline-variant/50 pt-6">
             <p className="text-xs text-on-surface-variant font-medium">
-              Powered by <span className="font-bold text-on-surface">Stitch MCP</span>
+              Powered by <span className="font-bold text-on-surface">Prudata Technologies</span>
             </p>
           </div>
 
