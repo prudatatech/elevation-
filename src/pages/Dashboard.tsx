@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getTotalStudents, classData } from '../data/students';
 import { getAllTeachers } from '../data/staff';
 import { useState, useEffect } from 'react';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
   const allStudents = classData.flatMap(c => c.sections.flatMap(s => s.students));
   const allTeachers = getAllTeachers();
   
@@ -12,6 +14,14 @@ export default function Dashboard() {
   const overdueStudents = allStudents.filter(s => s.feeStatus === 'Overdue');
   const [alert1, setAlert1] = useState<any>(lowAttendanceStudents[0]);
   const [alert2, setAlert2] = useState<any>(overdueStudents[0]);
+
+  // Tasks State
+  const [tasks, setTasks] = useState([
+    { id: 1, text: "Update library inventory list by end of week.", completed: false, icon: "inventory_2", colorClass: "text-primary bg-primary/20" },
+    { id: 2, text: "Approve 3 salary disbursements for Admin staff.", completed: false, icon: "payments", colorClass: "text-error bg-error/20" },
+    { id: 3, text: "Review new admission applications.", completed: false, icon: "person_add", colorClass: "text-emerald-600 bg-emerald-100" },
+  ]);
+  const toggleTask = (id: number) => setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
 
   // Time & Greeting Logic
   const [time, setTime] = useState(new Date());
@@ -43,8 +53,8 @@ export default function Dashboard() {
   const submissionRate = 76; // Random realistic number
   const circleOffset = 502.65 - (502.65 * submissionRate) / 100;
 
-  const handleAction = (actionName: string) => {
-    alert(`Action Executed: ${actionName}`);
+  const scrollToTasks = () => {
+    document.getElementById('my-tasks-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -56,10 +66,10 @@ export default function Dashboard() {
           <div>
             <h2 className="font-[Outfit] text-3xl font-bold text-primary mb-2">{greeting}, Admin</h2>
             <p className="text-on-surface-variant text-base">
-              You have <span className="font-bold text-primary">14 pending tasks</span> for today. Keep up the great work!
+              You have <span className="font-bold text-primary">{tasks.filter(t => !t.completed).length} pending tasks</span> for today. Keep up the great work!
             </p>
             <div className="mt-4 flex gap-3">
-              <button onClick={() => handleAction('View Task List')} className="bg-primary text-on-primary px-6 py-2 rounded-xl text-sm font-bold shadow-md hover:opacity-90 transition-opacity">
+              <button onClick={scrollToTasks} className="bg-primary text-on-primary px-6 py-2 rounded-xl text-sm font-bold shadow-md hover:opacity-90 transition-opacity">
                 View Task List
               </button>
               <Link to="/reports" className="bg-surface text-primary border border-primary px-6 py-2 rounded-xl text-sm font-bold hover:bg-primary-container/10 transition-colors inline-block text-center">
@@ -180,7 +190,7 @@ export default function Dashboard() {
                     <span className="font-bold text-on-surface">{alert1.name}</span> ({alert1.id}) has a very low attendance rate of <span className="text-error font-bold">{alert1.attendance}%</span>. Immediate intervention recommended.
                   </p>
                   <div className="flex gap-4">
-                    <button onClick={() => handleAction(`Notified Parent of ${alert1.name}`)} className="text-error font-bold text-xs hover:underline">Notify Parent ({alert1.parentName})</button>
+                    <button onClick={() => navigate('/communication')} className="text-error font-bold text-xs hover:underline">Notify Parent ({alert1.parentName})</button>
                     <button onClick={() => setAlert1(undefined)} className="text-on-surface-variant font-bold text-xs hover:underline">Dismiss</button>
                   </div>
                 </div>
@@ -199,7 +209,7 @@ export default function Dashboard() {
                   </p>
                   <div className="flex gap-4">
                     <Link to="/finance" className="text-primary font-bold text-xs hover:underline">View Finance Log</Link>
-                    <button onClick={() => handleAction(`Sent Reminder to ${alert2.name}`)} className="text-on-surface-variant font-bold text-xs hover:underline">Send Reminder</button>
+                    <button onClick={() => navigate('/communication')} className="text-on-surface-variant font-bold text-xs hover:underline">Send Reminder</button>
                     <button onClick={() => setAlert2(undefined)} className="text-on-surface-variant font-bold text-xs hover:underline">Dismiss</button>
                   </div>
                 </div>
@@ -270,22 +280,26 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Smart Reminders */}
-        <div>
-          <h5 className="text-sm font-bold uppercase tracking-wide mb-4">Smart Reminders</h5>
+        {/* Interactive Task List */}
+        <div id="my-tasks-section" className="scroll-mt-6">
+          <div className="flex justify-between items-center mb-4">
+            <h5 className="text-sm font-bold uppercase tracking-wide">My Tasks ({tasks.filter(t=>!t.completed).length})</h5>
+            <button onClick={() => setTasks([{id: Date.now(), text: "New Task...", completed: false, icon: "edit", colorClass: "text-amber-600 bg-amber-100"}, ...tasks])} className="text-primary hover:bg-primary/10 p-1 rounded-lg transition-colors">
+              <span className="material-symbols-outlined text-[18px]">add</span>
+            </button>
+          </div>
           <div className="space-y-3">
-            <div className="bg-surface-container rounded-xl p-3 flex items-start gap-3 border border-outline-variant/50">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
-                <span className="material-symbols-outlined text-[16px]">inventory_2</span>
+            {tasks.map(task => (
+              <div key={task.id} className={`rounded-xl p-3 flex items-start gap-3 border transition-all duration-300 cursor-pointer ${task.completed ? 'bg-surface-container-low border-transparent opacity-60' : 'bg-surface-container border-outline-variant/50 hover:border-primary/50 hover:shadow-sm'}`} onClick={() => toggleTask(task.id)}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-colors ${task.completed ? 'bg-emerald-100 text-emerald-600' : task.colorClass}`}>
+                  <span className="material-symbols-outlined text-[16px]">{task.completed ? 'check' : task.icon}</span>
+                </div>
+                <p className={`text-[11px] font-semibold leading-relaxed transition-all duration-300 flex-1 ${task.completed ? 'text-on-surface-variant line-through decoration-2' : 'text-on-surface'}`}>{task.text}</p>
               </div>
-              <p className="text-[11px] font-semibold text-on-surface-variant leading-relaxed">Update library inventory list by end of week.</p>
-            </div>
-            <div className="bg-surface-container rounded-xl p-3 flex items-start gap-3 border border-outline-variant/50">
-              <div className="w-8 h-8 rounded-full bg-error/20 flex items-center justify-center text-error shrink-0 mt-0.5">
-                <span className="material-symbols-outlined text-[16px]">verified</span>
-              </div>
-              <p className="text-[11px] font-semibold text-on-surface-variant leading-relaxed">Approve 3 salary disbursements for Admin staff.</p>
-            </div>
+            ))}
+            {tasks.length === 0 && (
+              <p className="text-center text-xs text-on-surface-variant font-semibold py-4">All caught up!</p>
+            )}
           </div>
         </div>
       </aside>
