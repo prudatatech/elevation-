@@ -38,7 +38,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
     <div className="flex h-screen w-full bg-surface overflow-hidden">
       
       {/* Left Half: School Image & Branding */}
-      <div className="hidden lg:flex w-1/2 relative flex-col justify-center items-center overflow-hidden">
+      <div className="hidden lg:flex flex-1 relative flex-col justify-center items-center overflow-hidden">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center animate-[scaleIn_20s_ease-out_forwards]"
@@ -53,24 +53,24 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
           <div className="mb-6 w-24 h-24 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20 shadow-2xl">
             <span className="material-symbols-outlined text-[48px] text-white">school</span>
           </div>
-          <h1 className="text-5xl font-extrabold tracking-tight mb-4 font-[Outfit]">
+          <h1 className="text-5xl font-extrabold tracking-tight mb-4 font-[Outfit] whitespace-nowrap">
             Elevation <span className="text-blue-300">ERP</span>
           </h1>
-          <p className="text-lg text-blue-100 max-w-md leading-relaxed font-medium">
+          <p className="text-lg text-blue-100 max-w-[450px] leading-relaxed font-medium">
             Empowering modern Indian schools with intelligent administration, seamless communication, and data-driven insights.
           </p>
         </div>
       </div>
 
       {/* Right Half: Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 animate-[fadeIn_0.5s_ease-out]">
-        <div className="w-full max-w-md bg-surface rounded-3xl border border-outline-variant card-shadow p-8 sm:p-10 relative overflow-hidden">
+      <div className="flex-1 flex items-center justify-center p-8 sm:p-12 animate-[fadeIn_0.5s_ease-out]">
+        <div className="w-full max-w-[450px] min-w-[320px] bg-surface rounded-3xl border border-outline-variant card-shadow p-8 sm:p-10 relative overflow-hidden">
           
           {/* Decorative background element */}
           <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-primary/5 rounded-full blur-2xl pointer-events-none" />
 
           <div className="mb-8">
-            <h2 className="text-3xl font-extrabold text-on-surface mb-2 tracking-tight">Welcome Back</h2>
+            <h2 className="text-3xl font-extrabold text-on-surface mb-2 tracking-tight whitespace-nowrap">Welcome Back</h2>
             <p className="text-sm text-on-surface-variant font-medium">Please sign in to access your portal.</p>
           </div>
 
