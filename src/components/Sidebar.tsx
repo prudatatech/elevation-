@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 interface SidebarProps {
   isCollapsed: boolean;
+  onLogout: () => void;
 }
 
 interface NavSection {
@@ -29,7 +30,7 @@ const navSections: NavSection[] = [
   {
     label: 'Academics',
     items: [
-      { name: 'AI Intelligence', path: '/ai-intelligence', icon: 'auto_awesome' },
+      { name: 'Nova AI Open Assistant', path: '/ai-intelligence', icon: 'auto_awesome' },
       { name: 'Homework & Assignments', path: '/homework', icon: 'assignment' },
       { name: 'Results & Grades', path: '/results', icon: 'grade' },
       { name: 'Timetable', path: '/timetable', icon: 'calendar_month' },
@@ -55,7 +56,7 @@ const navSections: NavSection[] = [
   },
 ];
 
-export default function Sidebar({ isCollapsed }: SidebarProps) {
+export default function Sidebar({ isCollapsed, onLogout }: SidebarProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(
     Object.fromEntries(navSections.map(s => [s.label, true]))
   );
@@ -168,9 +169,10 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
       </nav>
 
       {/* Nova AI Footer */}
-      <div className="px-2 pb-3 shrink-0">
-        <div
-          className="rounded-xl relative overflow-hidden cursor-pointer group"
+      <div className="px-2 pb-3 shrink-0 space-y-2">
+        <NavLink
+          to="/ai-intelligence"
+          className="rounded-xl relative overflow-hidden block group"
           style={{
             background: isCollapsed ? 'transparent' : 'var(--color-primary-container)',
             padding: isCollapsed ? '8px' : '14px',
@@ -187,9 +189,9 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
             <div className="relative z-10">
               <p className="text-[10px] font-semibold text-on-primary-container/70 mb-0.5">Nova AI</p>
               <p className="text-[13px] font-bold text-on-primary-container font-[Outfit] mb-2">Ask Anything</p>
-              <button className="w-full bg-on-primary-container text-primary-container text-[12px] font-bold py-1.5 rounded-lg hover:opacity-90 transition-opacity">
+              <div className="w-full bg-on-primary-container text-primary-container text-[12px] font-bold py-1.5 rounded-lg hover:opacity-90 transition-opacity text-center">
                 Open Assistant
-              </button>
+              </div>
             </div>
           )}
           {!isCollapsed && (
@@ -197,7 +199,19 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
               <span className="material-symbols-outlined text-[60px]">auto_awesome</span>
             </div>
           )}
-        </div>
+        </NavLink>
+
+        <button
+          onClick={onLogout}
+          className="w-full rounded-xl flex items-center gap-3 text-error hover:bg-error/10 transition-colors"
+          style={{
+            padding: isCollapsed ? '8px' : '12px 14px',
+            justifyContent: isCollapsed ? 'center' : 'flex-start'
+          }}
+        >
+          <span className="material-symbols-outlined text-[20px]">logout</span>
+          {!isCollapsed && <span className="text-[13px] font-bold">Secure Logout</span>}
+        </button>
       </div>
     </aside>
   );

@@ -24,14 +24,23 @@ import ReportsPage from './pages/ReportsPage';
 import VisitorsPage from './pages/VisitorsPage';
 import IncidentsPage from './pages/IncidentsPage';
 import SettingsPage from './pages/SettingsPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={() => setIsAuthenticated(true)} />;
+  }
 
   return (
     <BrowserRouter>
       <div className="flex h-screen overflow-hidden">
-        <Sidebar isCollapsed={isSidebarCollapsed} />
+        <Sidebar 
+          isCollapsed={isSidebarCollapsed} 
+          onLogout={() => setIsAuthenticated(false)} 
+        />
 
         <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSidebarCollapsed ? 'ml-[72px]' : 'ml-[260px]'}`}>
           <Header
